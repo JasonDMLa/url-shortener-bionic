@@ -62,4 +62,15 @@ describe('URL shortener (e2e)', () => {
     expect(response.headers.location).toBe(TEST_URL);
     expect(response.body).toEqual({ url: TEST_URL });
   });
+
+  it('GET /:shortCode returns 404 for an unknown code', async () => {
+    await request(app.getHttpServer()).get('/unknown').expect(404);
+  });
+
+  it('POST / returns 400 for an invalid URL', async () => {
+    await request(app.getHttpServer())
+      .post('/')
+      .send({ url: 'not-a-url' })
+      .expect(400);
+  });
 });
