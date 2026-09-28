@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ShortenResult } from '../types/url/shorten-result.js';
 import { UrlRepository } from '../repositories/url/url.repository.js';
 import {
@@ -9,7 +9,7 @@ import {
 @Injectable()
 export class UrlService {
   constructor(private readonly urlRepository: UrlRepository) {}
-  
+
   shorten(url: string): ShortenResult {
     const existingShortCode = this.urlRepository.findShortCode(url);
     if (existingShortCode) {
@@ -23,4 +23,13 @@ export class UrlService {
 
     return { shortCode, url };
   }
+
+  resolve(shortCode: string): string {
+  const url = this.urlRepository.findUrl(shortCode);
+  if (!url) {
+    throw new NotFoundException(`No URL found for short code "${shortCode}"`);
+  }
+  return url;
+}
+
 }

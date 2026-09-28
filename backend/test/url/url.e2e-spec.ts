@@ -47,4 +47,19 @@ describe('URL shortener (e2e)', () => {
 
     expect(second.body.short_url).toBe(first.body.short_url);
   });
+
+  it('GET /:shortCode redirects to the original URL', async () => {
+    const created = await request(app.getHttpServer())
+      .post('/')
+      .send({ url: TEST_URL });
+
+    const response = await request(app.getHttpServer())
+      .get(created.body.short_url)
+      .expect(301);
+
+    console.log('Response headers:', response.headers);
+
+    expect(response.headers.location).toBe(TEST_URL);
+    expect(response.body).toEqual({ url: TEST_URL });
+  });
 });
