@@ -57,8 +57,6 @@ describe('URL shortener (e2e)', () => {
       .get(created.body.short_url)
       .expect(301);
 
-    console.log('Response headers:', response.headers);
-
     expect(response.headers.location).toBe(TEST_URL);
     expect(response.body).toEqual({ url: TEST_URL });
   });
@@ -71,6 +69,13 @@ describe('URL shortener (e2e)', () => {
     await request(app.getHttpServer())
       .post('/')
       .send({ url: 'not-a-url' })
+      .expect(400);
+  });
+
+  it('POST / returns 400 for a URL without http or https', async () => {
+    await request(app.getHttpServer())
+      .post('/')
+      .send({ url: 'www.example.com' })
       .expect(400);
   });
 });
