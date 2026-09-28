@@ -3,6 +3,8 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from '../../src/app.module.js';
 
+const TEST_URL = 'http://www.makeitcheaper.com';
+
 describe('URL shortener (e2e)', () => {
   let app: INestApplication;
 
@@ -23,12 +25,26 @@ describe('URL shortener (e2e)', () => {
   it('POST / returns a short URL for a valid URL', async () => {
     const response = await request(app.getHttpServer())
       .post('/')
-      .send({ url: 'http://www.makeitcheaper.com' })
-      .expect(201);
+      .send({ url: TEST_URL })
+      .expect(200);
 
     expect(response.body).toEqual({
-      url: 'http://www.makeitcheaper.com',
+      url: TEST_URL,
       short_url: expect.stringMatching(/^\/[a-z0-9]{6}$/),
     });
+  });
+
+  it('POST / returns the same short URL for a duplicate', async () => {
+    const first = await request(app.getHttpServer())
+      .post('/')
+      .send({ url: TEST_URL })
+      .expect(200);
+
+    const second = await request(app.getHttpServer())
+      .post('/')
+      .send({ url: TEST_URL })
+      .expect(200);
+
+    expect(second.body.short_url).toBe(first.body.short_url);
   });
 });
