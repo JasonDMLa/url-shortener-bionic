@@ -1,4 +1,5 @@
 import { randomInt } from 'node:crypto';
+import type { CodeGenerator, CodeTakenCheck } from '../../types/url/short-code-generator.types.js';
 
 const BASE36_ALPHABET = 'abcdefghijklmnopqrstuvwxyz0123456789';
 const CODE_LENGTH = 6;
@@ -13,8 +14,8 @@ export function generateShortCode(): string {
 }
 
 export function findUnusedCode(
-  generate: () => string,
-  isTaken: (code: string) => boolean,
+  generate: CodeGenerator,
+  isTaken: CodeTakenCheck,
 ): string {
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
     const code = generate();
