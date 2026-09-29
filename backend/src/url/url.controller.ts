@@ -14,10 +14,9 @@ import { ShortenedUrlResponseDto } from '../dto/url/shortened-url-response.dto.j
 import { RedirectResponseDto } from '../dto/url/redirect-response.dto.js';
 import type { Response } from 'express';
 
-
 @Controller('')
 export class UrlController {
-  constructor(private urlService: UrlService) {}
+  constructor(private readonly urlService: UrlService) {}
 
   @Post()
   @HttpCode(HttpStatus.OK)

@@ -1,5 +1,8 @@
 import { randomInt } from 'node:crypto';
-import type { CodeGenerator, CodeTakenCheck } from '../../types/url/short-code-generator.types.js';
+import type {
+  CodeGenerator,
+  CodeTakenCheck,
+} from '../../types/url/short-code-generator.types.js';
 
 const BASE36_ALPHABET = 'abcdefghijklmnopqrstuvwxyz0123456789';
 const CODE_LENGTH = 6;
