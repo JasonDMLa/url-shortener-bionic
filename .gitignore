@@ -10,7 +10,7 @@ coverage/
 # Environment variables and secrets
 .env
 
-# Private files, not part of the submission
+# helper docs
 TechTestEmail.md
 Tech Test.pdf
 CLAUDE.md
